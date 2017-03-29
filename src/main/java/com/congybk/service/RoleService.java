@@ -8,13 +8,13 @@ import java.util.List;
  * @author YNC
  */
 public interface RoleService {
-    public List<Role> getAll();
+    List<Role> getAll();
 
-    public boolean deleteAll();
+    boolean deleteAll();
 
-    public Role create(String roleName);
+    Role create(String roleName);
 
-    public Role findByName(String roleName);
+    Role findByName(String roleName);
 
-    public Role findById(int id);
+    Role findById(int id);
 }

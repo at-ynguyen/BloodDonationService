@@ -179,7 +179,6 @@ public class UserController {
         } else {
             return new ResponseEntity<Object>("Current password is not correct", HttpStatus.BAD_REQUEST);
         }
-
     }
 
 }

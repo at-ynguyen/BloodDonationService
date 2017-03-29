@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author YNC
@@ -27,6 +28,7 @@ public class User {
     private String bloodType;
     private String tokenPushNotification;
     private List<Permission> permissionList = new ArrayList<>();
+    private Set<Event> event;
 
     public User() {
         super();
@@ -150,5 +152,14 @@ public class User {
 
     public void setPermissionList(List<Permission> permissionList) {
         this.permissionList = permissionList;
+    }
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    public Set<Event> getEvent() {
+        return event;
+    }
+
+    public void setEvent(Set<Event> event) {
+        this.event = event;
     }
 }

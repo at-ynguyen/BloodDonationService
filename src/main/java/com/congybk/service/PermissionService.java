@@ -8,5 +8,5 @@ import com.congybk.entity.User;
  * @author YNC
  */
 public interface PermissionService {
-    public Permission create(User user, Role role);
+    Permission create(User user, Role role);
 }

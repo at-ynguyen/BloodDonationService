@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -31,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private UserDetailsService userDetailsService;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -62,12 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest()
-                .authenticated()
-                .and().formLogin()
-                .loginPage("/web/user/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .permitAll();
+                .authenticated();
 
         // Custom JWT based security filter
         httpSecurity

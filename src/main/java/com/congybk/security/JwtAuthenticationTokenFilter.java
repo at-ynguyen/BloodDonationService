@@ -1,7 +1,5 @@
 package com.congybk.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-
-    private final Log logger = LogFactory.getLog(this.getClass());
 
     private UserDetailsService userDetailsService;
 
