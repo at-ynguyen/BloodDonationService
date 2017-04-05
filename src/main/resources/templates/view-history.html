@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tạo đợt hiến máu</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css"/>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <style>
+        a.paginate_button {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        a.current {
+            background: #ecf0f1;;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Admin</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/event/create">Tạo đợt hiến máu</a></li>
+            <li class="active"><a href="/history">Quản lý lịch sử</a></li>
+            <li><a href="/event">Quản lý đợt hiến máu</a></li>
+            <li><a href="/post">Quản lý tìm máu</a></li>
+            <li><a href="/organization">Quản lý đơn vị hiến máu</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Đăng xuất</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <label>Họ và Tên: </label>
+    <label th:text="${user.fullName}">Nguyen Cong Y</label>
+    <br/>
+    <label>CMND: </label>
+    <label th:text="${user.cardId}">205846604</label>
+    <br/>
+    <table id="tableHistory" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th class="col-sm-4">Thời gian</th>
+            <th class="col-sm-8">Ghi chú</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item:${historys}">
+            <td th:text="${item.time}"></td>
+            <td th:text="${item.note}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tableHistory').DataTable({
+            "scrollY": "200px",
+            "scrollCollapse": true,
+            "paging": true,
+            "language": {
+                "emptyTable": "Không có lịch sử hiến máu nào.",
+                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ lịch sử",
+                "search": "Tìm kiếm:",
+                "paginate": {
+                    "first": "Đầu tiên",
+                    "last": "Sau",
+                    "next": "Kế tiếp",
+                    "previous": "Quay lại"
+                },
+                "lengthMenu": "Hiển thị _MENU_",
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -6,21 +6,22 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * @Author YNC on 27/03/2017.
+ * @Author YNC on 02/04/2017.
  */
 @Entity
-@Table(name = "organization")
-public class Organization {
+@Table(name = "town")
+public class Town {
     private int id;
     private String name;
     private Set<Event> event;
+    private Set<User> user;
 
-    public Organization(int id, String name) {
+    public Town(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Organization() {
+    public Town() {
     }
 
     @Id
@@ -33,7 +34,6 @@ public class Organization {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -42,7 +42,7 @@ public class Organization {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "town")
     @JsonIgnore
     public Set<Event> getEvent() {
         return event;
@@ -50,5 +50,15 @@ public class Organization {
 
     public void setEvent(Set<Event> event) {
         this.event = event;
+    }
+
+    @OneToMany(mappedBy = "town")
+    @JsonIgnore
+    public Set<User> getUser() {
+        return user;
+    }
+
+    public void setUser(Set<User> user) {
+        this.user = user;
     }
 }

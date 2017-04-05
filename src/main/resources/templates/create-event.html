@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tạo đợt hiến máu</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Admin</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/event/create">Tạo đợt hiến máu</a></li>
+            <li><a href="/history">Quản lý lịch sử</a></li>
+            <li><a href="/event">Quản lý đợt hiến máu</a></li>
+            <li><a href="/post">Quản lý tìm máu</a></li>
+            <li><a href="/organization">Quản lý đơn vị hiến máu</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Đăng xuất</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+        <div class="col-sm-10 col-md-8 col-md-offset-2">
+            <h2 style="text-align: center">Tạo đợt hiến máu</h2>
+            <form class="form-horizontal" th:action="@{/event/handle-create-event}" th:object="${formEvent}"
+                  method="POST">
+                <input class="form-control" type="text" name="name" placeholder="Tên đợt hiến máu"/><br/>
+                <label>Chọn nhóm máu:</label><br/>
+                <label class="checkbox-inline"><input type="checkbox" name="a" value="A"/>A</label>
+                <label class="checkbox-inline"><input type="checkbox" name="b" value="B"/>B</label>
+                <label class="checkbox-inline"><input type="checkbox" name="ab" value="AB"/>AB</label>
+                <label class="checkbox-inline"><input type="checkbox" name="o" value="O"/>O</label>
+                <br/>
+                <br/>
+                <select class="form-control" name="organization">
+                    <option th:each="item:${organizations}" th:value="${item.id}" th:text="${item.name}"></option>
+                </select>
+                <br/>
+                <input class="form-control" type="datetime-local" name="time"/> <br/>
+                <textarea class="form-control" rows="5" placeholder="Nội dung" name="content"/><br/>
+                <input width="40px" class="col-md-4 form-control" type="text" name="address"
+                       placeholder="Địa điểm"/><br/><br/>
+                <select class="col-md-2 form-control" name="town">
+                    <option th:each="item:${towns}" th:value="${item.id}" th:text="${item.name}"></option>
+                </select>
+                <br/>
+                <br/>
+                <label style="margin-right: 10px"><input type="radio" name="option" value="1"/> Tất cã</label>
+                <label style="margin-right: 10px"><input type="radio" name="option" value="2"/> Nhóm máu </label>
+                <label style=" margin-right: 10px"><input type="radio" name="option" value="3"/> Địa điểm
+                </label>
+                <label style="margin-right: 10px"><input type="radio" name="option" value="4"/> Nhóm máu và địa điểm
+                </label>
+                <br/>
+                <button style="margin-top: 20px" class="btn btn-success" type="submit">Tạo đợt hiến máu</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

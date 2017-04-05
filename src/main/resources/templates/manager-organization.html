@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tạo đợt hiến máu</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css"/>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <style>
+        a.paginate_button {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        a.current {
+            background: #ecf0f1;;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Admin</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/event/create">Tạo đợt hiến máu</a></li>
+            <li><a href="/history">Quản lý lịch sử</a></li>
+            <li><a href="/event">Quản lý đợt hiến máu</a></li>
+            <li><a href="/post">Quản lý tìm máu</a></li>
+            <li class="active"><a href="/organization">Quản lý đơn vị hiến máu</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Đăng xuất</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <button class="btn btn-default" style="margin-bottom: 20px"
+            data-toggle="modal" data-target="#addOrganization">Thêm
+    </button>
+    <br/>
+    <table id="tableOrganization" class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="col-md-1">ID</th>
+            <th class="col-md-5">Tên đơn vị</th>
+            <th class="col-md-2">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="organizations" type=""*/-->
+        <tr th:each="item:${organizations}">
+            <!--/*@thymesVar id="id" type=""*/-->
+            <td th:text="${item.id}" class="col-md-1"></td>
+            <td th:text="${item.name}" class="col-md-5"></td>
+            <td class="col-md-2"><a th:attr="data-id=${item.id},data-name=${item.name}" data-toggle="modal"
+                                    data-target="#updateOrganization"
+                                    class="update btn btn-default">Chỉnh
+                sửa</a> <a th:href="@{/organization/delete/{id}(id=${item.id})}" class="btn btn-danger">Xóa</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addOrganization" role="dialog">id
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thêm đơn vị</h4>
+                </div>
+                <!--/*@thymesVar id="organization" type=""*/-->
+                <form th:action="@{/organization/add}" th:object="${organization}" class="form-horizontal"
+                      method="post">
+                    <div class="modal-body">
+                        <input type="text" name="name" class="form-control" placeholder="Tên đơn vị"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-success">Thêm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update -->
+    <div class="modal fade" id="updateOrganization" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Chỉnh sửa đơn vị</h4>
+                </div>
+                <!--/*@thymesVar id="organization" type=""*/-->
+                <form th:action="@{/organization/edit}" th:object="${organization}" class="form-horizontal"
+                      method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="id" name="id"/>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Tên đơn vị"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-success">Chỉnh sửa</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on("click", ".update", function () {
+                var id = $(this).data('id');
+                var name = $(this).data('name');
+                $(".modal-body #name").val(name);
+                $(".modal-body #id").val(id);
+
+            });
+            $('#tableOrganization').DataTable({
+                "scrollY": "200px",
+                "scrollCollapse": true,
+                "paging": false,
+                "language": {
+                    "emptyTable": "Chưa tạo hiến máu nào.",
+                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_",
+                    "search": "Tìm kiếm:",
+                    "paginate": {
+                        "first": "Đầu tiên",
+                        "last": "Sau",
+                        "next": "Kế tiếp",
+                        "previous": "Quay lại"
+                    },
+                    "zeroRecords": "không tìm thấy",
+                    "lengthMenu": "Hiển thị _MENU_",
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>

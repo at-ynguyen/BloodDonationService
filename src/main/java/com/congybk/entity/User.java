@@ -23,12 +23,15 @@ public class User {
     private String cardId;
     private String fullName;
     private Date birthDay;
+    private String address;
+    private Town town;
     private int gender;
     private float weight;
     private String bloodType;
     private String tokenPushNotification;
     private List<Permission> permissionList = new ArrayList<>();
     private Set<Event> event;
+    private Set<History> history;
 
     public User() {
         super();
@@ -59,6 +62,25 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "address", nullable = false)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "town_id", nullable = false)
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
     }
 
     @JsonIgnore
@@ -153,6 +175,7 @@ public class User {
     public void setPermissionList(List<Permission> permissionList) {
         this.permissionList = permissionList;
     }
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     public Set<Event> getEvent() {
@@ -161,5 +184,14 @@ public class User {
 
     public void setEvent(Set<Event> event) {
         this.event = event;
+    }
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    public Set<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(Set<History> history) {
+        this.history = history;
     }
 }
