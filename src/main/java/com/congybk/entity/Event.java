@@ -1,7 +1,10 @@
 package com.congybk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @Author YNC on 27/03/2017.
@@ -19,8 +22,10 @@ public class Event {
     private String address;
     private Town town;
     private boolean status;
+    private Date createAt;
+    private Set<EventMember> eventMember;
 
-    public Event(int id, User user, String eventName, Organization organization, String bloodType, Date time, String content, String address, Town town, boolean status) {
+    public Event(int id, User user, String eventName, Organization organization, String bloodType, Date time, String content, String address, Town town, boolean status, Date createAt, Set<EventMember> eventMember) {
         this.id = id;
         this.user = user;
         this.eventName = eventName;
@@ -31,6 +36,8 @@ public class Event {
         this.address = address;
         this.town = town;
         this.status = status;
+        this.createAt = createAt;
+        this.eventMember = eventMember;
     }
 
     public Event() {
@@ -126,7 +133,26 @@ public class Event {
         return status;
     }
 
+    @Column(name = "create_at")
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    @OneToMany(mappedBy = "event")
+    @JsonIgnore
+    public Set<EventMember> getEventMember() {
+        return eventMember;
+    }
+
+    public void setEventMember(Set<EventMember> eventMember) {
+        this.eventMember = eventMember;
     }
 }

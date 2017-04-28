@@ -17,4 +17,11 @@ public interface EventService {
     Event update(Event event);
 
     Event create(Event event);
+
+    List<Event> getListEvent(int start, int end);
+
+    long getCount();
+
+
+
 }

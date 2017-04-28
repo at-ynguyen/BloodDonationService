@@ -28,9 +28,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="/event/create">Tạo đợt hiến máu</a></li>
-            <li class="active"><a href="/history">Quản lý lịch sử</a></li>
-            <li><a href="/event">Quản lý đợt hiến máu</a></li>
-            <li><a href="/post">Quản lý tìm máu</a></li>
+            <li class="active"><a href="/history/1">Quản lý lịch sử</a></li>
+            <li><a href="/event/1">Quản lý đợt hiến máu</a></li>
+            <li><a href="/post/1">Quản lý tìm máu</a></li>
             <li><a href="/organization">Quản lý đơn vị hiến máu</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -39,12 +39,29 @@
     </div>
 </nav>
 <div class="container">
-    <label>Họ và Tên: </label>
-    <label th:text="${user.fullName}">Nguyen Cong Y</label>
-    <br/>
-    <label>CMND: </label>
-    <label th:text="${user.cardId}">205846604</label>
-    <br/>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Họ và Tên: </label>
+            <label th:text="${user.fullName}"></label>
+            <br/>
+            <label>CMND: </label>
+            <label th:text="${user.cardId}"></label>
+            <br/>
+            <label>Giới tính: </label>
+            <label th:if="${user.gender}" th:text="Nam"></label>
+            <label th:unless="${user.gender}" th:text="Nữ"></label>
+            <br/>
+        </div>
+        <div class="col-sm-6">
+            <label>Ngày sinh: </label>
+            <label th:text="${user.birthDay}"></label>
+            <br/>
+            <label>Cân nặng: </label>
+            <label th:text="${user.weight}"></label>
+            <br/>
+        </div>
+    </div>
+
     <table id="tableHistory" class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -63,7 +80,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#tableHistory').DataTable({
-            "scrollY": "200px",
+            "scrollY": "500px",
             "scrollCollapse": true,
             "paging": true,
             "language": {

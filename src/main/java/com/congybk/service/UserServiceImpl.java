@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        return null;
+        return mUserRepository.save(user);
     }
 
     @Override
@@ -70,5 +70,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> getAllRoleByUserId(int id) {
         return this.mUserRepository.findOne(id).getPermissionList().stream().map(x -> x.getRole()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getListUser(int start) {
+        return mUserRepository.getListUser(start);
+    }
+
+    @Override
+    public List<User> findByBloodType(String bloodType) {
+        return mUserRepository.findByBloodType(bloodType);
+    }
+
+    @Override
+    public List<User> findByTownId(int townId) {
+        return mUserRepository.findByTownId(townId);
+    }
+
+    @Override
+    public List<User> findByTownIdAndBloodType(int townId, String bloodType) {
+        return mUserRepository.findByTownIdAndBloodType(townId, bloodType);
     }
 }

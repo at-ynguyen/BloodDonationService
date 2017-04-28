@@ -31,4 +31,12 @@ public interface UserService {
     User updatePassword(User user);
 
     List<Role> getAllRoleByUserId(int id);
+
+    List<User> getListUser(int start);
+
+    List<User> findByBloodType(String bloodType);
+
+    List<User> findByTownId(int townId);
+
+    List<User> findByTownIdAndBloodType(int townId, String bloodType);
 }

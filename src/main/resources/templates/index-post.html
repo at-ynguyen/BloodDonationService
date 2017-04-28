@@ -34,8 +34,11 @@
     <div th:each="item:${posts}" class="row">
         <div class="col-xs-6 col-md-3">
             <a href="#" class="thumbnail">
-                <img th:src="${item.images}"
-                     alt="">
+                <img th:if="${item.image}!=''" th:src="${item.image}"
+                     alt=""/>
+                <img th:unless="${item.image}!=''"
+                     src="http://govselect.com/wp-content/uploads/2015/08/Donating-Blood.jpg"
+                     alt=""/>
             </a>
         </div>
         <div class="col-xs-6 col-md-3">

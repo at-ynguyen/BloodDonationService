@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Tạo đợt hiến máu</title>
@@ -16,9 +16,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="/event/create">Tạo đợt hiến máu</a></li>
-            <li><a href="/history">Quản lý lịch sử</a></li>
-            <li><a href="/event">Quản lý đợt hiến máu</a></li>
-            <li class="active"><a href="/post">Quản lý tìm máu</a></li>
+            <li><a href="/history/1">Quản lý lịch sử</a></li>
+            <li><a href="/event/1">Quản lý đợt hiến máu</a></li>
+            <li class="active"><a href="/post/1">Quản lý tìm máu</a></li>
             <li><a href="/organization">Quản lý đơn vị hiến máu</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -32,31 +32,57 @@
         <button class="btn btn-success" type="submit">Tìm kiếm</button>
     </form>
     <br/>
-    <table class="table table-bordered">
+    <table class="table table-striped table-bordered">
         <thead>
         <tr class="row">
-            <th class="col-md-1">ID</th>
+            <th class="col-md-2">Người đăng</th>
             <th class="col-md-2">Tiêu đề</th>
-            <th class="col-md-2">Nhóm máu</th>
-            <th class="col-md-2">Ngày</th>
+            <th class="col-md-1">Nhóm máu</th>
+            <th class="col-md-2">Ngày đăng</th>
             <th class="col-md-2">Địa điểm</th>
             <th class="col-md-3">Thao tác</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="row">
-            <td class="col-md-1">1</td>
-            <td class="col-md-2">Cần gấp máu</td>
-            <td class="col-md-2">A</td>
-            <td class="col-md-2">21/12/2017</td>
-            <td class="col-md-2">Bệnh viện ung bứu</td>
+        <tr class="row" th:each="item:${findblood}">
+            <td class="col-md-2" th:text="${item.user.fullName}"></td>
+            <td class="col-md-2" th:text="${item.postName}">Cần gấp máu</td>
+            <td class="col-md-1" th:text="${item.bloodType}">A</td>
+            <td class="col-md-2" th:text="${item.createAt}">21/12/2017</td>
+            <td class="col-md-2" th:text="${item.address}">Bệnh viện ung bứu</td>
             <td class="col-md-3">
-                <button data-toggle="modal" data-target="#detail" class="btn btn-success">Xem chi tiết</button>
-                <button class="btn btn-danger">Duyệt</button>
+                <button data-toggle="modal"
+                        th:attr="data-id=${item.id},
+                        data-name=${item.postName},
+                        data-type=${item.bloodType},
+                        data-time=${item.createAt},
+                        data-address=${item.address},
+                        data-content=${item.postContent},
+                        data-image=${item.image}"
+                        data-target="#detail" class="view btn btn-success">Xem chi tiết
+                </button>
+                <a th:unless="${item.approved}" th:href="@{/post/check/{id}(id=${item.id})}"
+                   class="btn btn-danger">Duyệt</a>
+                <a th:if="${item.approved}" th:href="@{/post/check/{id}(id=${item.id})}" class="btn btn-success">Đã
+                    duyệt</a>
             </td>
         </tr>
         </tbody>
     </table>
+    <div style="text-align: center">
+        <a th:if="${current}>1" th:href="@{/post/{id}(id=${current}-1)}" type="button" class="btn btn-default">Sau</a>
+        <a th:unless="${current}>1" th:href="@{/post/{id}(id=1)}" type="button" class="btn btn-default">Sau</a>
+        <div th:each="item:${page}" class="btn-group" role="group" aria-label="...">
+            <a th:href="@{/post/{id}(id=${item})}" th:if="${current}==${item}" th:text="${item}" type="button"
+               class="btn btn-success"></a>
+            <a th:href="@{/post/{id}(id=${item})}" th:unless="${current}==${item}" th:text="${item}" type="button"
+               class="btn btn-default"></a>
+        </div>
+        <a th:if="${current}>=${maxPage}" th:href="@{/post/{id}(id=${current})}" type="button"
+           class="btn btn-default">Kế tiếp</a>
+        <a th:unless="${current}>=${maxPage}" th:href="@{/post/{id}(id=${current}+1)}" type="button"
+           class="btn btn-default">Kế tiếp</a>
+    </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="detail" role="dialog">
@@ -68,12 +94,16 @@
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="tiêu đề" readonly="readonly"/><br/>
-                    <input type="text" class="form-control" placeholder="Nhóm máu" readonly="readonly"/><br/>
-                    <input type="date" class="form-control" readonly="readonly"/><br/>
-                    <textarea readonly="readonly" class="form-control" rows="5" placeholder="Nội dung"
+                    <input id="name" type="text" class="form-control" placeholder="tiêu đề" readonly="readonly"/><br/>
+                    <input id="type" type="text" class="form-control" placeholder="Nhóm máu"
+                           readonly="readonly"/><br/>
+                    <input id="date" type="datetime" class="form-control" readonly="readonly"/><br/>
+                    <textarea id="content" readonly="readonly" class="form-control" rows="5" placeholder="Nội dung"
                               name="content"/><br/>
-                    <input type="text" class="form-control" placeholder="Địa điểm" readonly="readonly"/>
+                    <img style="text-align: center" id="image" width="500px" height="500px"/>
+                    <br/>
+                    <br/>
+                    <input id="address" type="text" class="form-control" placeholder="Địa điểm" readonly="readonly"/>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -82,5 +112,33 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on("click", ".view", function () {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var bloodType = $(this).data('type');
+            var date = $(this).data('time');
+            var content = $(this).data('content');
+            var address = $(this).data('address');
+            var image = $(this).data('image');
+            $(".modal-body #id").val(id);
+            $(".modal-body #name").val(name);
+            $(".modal-body #type").val(bloodType);
+            $(".modal-body #date").val(date);
+            $(".modal-body #content").val(content);
+            $(".modal-body #address").val(address);
+            if (image == "" || image == null) {
+                $(".modal-body #image ").hide();
+            } else {
+                $(".modal-body #image ").show();
+                $(".modal-body #image ").attr("src", image);
+            }
+
+
+        });
+    });
+</script>
 </body>
 </html>

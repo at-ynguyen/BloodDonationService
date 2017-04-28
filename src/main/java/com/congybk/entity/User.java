@@ -25,24 +25,34 @@ public class User {
     private Date birthDay;
     private String address;
     private Town town;
-    private int gender;
+    private boolean gender;
     private float weight;
     private String bloodType;
     private String tokenPushNotification;
     private List<Permission> permissionList = new ArrayList<>();
     private Set<Event> event;
     private Set<History> history;
+    private Set<EventMember> eventMember;
 
     public User() {
         super();
     }
 
-    public User(int id, String email, String password, String cardId, String fullName) {
+    public User(int id, String email, String password, String cardId, String fullName, Boolean gender) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.cardId = cardId;
         this.fullName = fullName;
+        this.gender = gender;
+    }
+
+    public User(String cardId, String fullName, Town town, Date birthDay, String bloodType) {
+        this.cardId = cardId;
+        this.town = town;
+        this.fullName = fullName;
+        this.birthDay = birthDay;
+        this.bloodType = bloodType;
     }
 
     @Id
@@ -130,11 +140,11 @@ public class User {
     }
 
     @Column(name = "gender", nullable = false)
-    public int getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -156,6 +166,7 @@ public class User {
         this.bloodType = bloodType;
     }
 
+    @JsonIgnore
     @Column(name = "token_push_notification", nullable = false)
     public String getTokenPushNotification() {
         return tokenPushNotification;
@@ -185,6 +196,7 @@ public class User {
     public void setEvent(Set<Event> event) {
         this.event = event;
     }
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     public Set<History> getHistory() {
@@ -193,5 +205,15 @@ public class User {
 
     public void setHistory(Set<History> history) {
         this.history = history;
+    }
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    public Set<EventMember> getEventMember() {
+        return eventMember;
+    }
+
+    public void setEventMember(Set<EventMember> eventMember) {
+        this.eventMember = eventMember;
     }
 }

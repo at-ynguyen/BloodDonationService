@@ -28,9 +28,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="/event/create">Tạo đợt hiến máu</a></li>
-            <li><a href="/history">Quản lý lịch sử</a></li>
-            <li class="active"><a href="/event">Quản lý đợt hiến máu</a></li>
-            <li><a href="/post">Quản lý tìm máu</a></li>
+            <li><a href="/history/1">Quản lý lịch sử</a></li>
+            <li class="active"><a href="/event/1">Quản lý đợt hiến máu</a></li>
+            <li><a href="/post/1">Quản lý tìm máu</a></li>
             <li><a href="/organization">Quản lý đơn vị hiến máu</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -70,17 +70,31 @@
                         "
                         data-target="#detail" class="view btn btn-sm  btn-success">Xem chi tiết
                 </button>
-                <button class="btn btn-sm btn-default">DS Người hiến</button>
+                <a th:href="@{/event/user/{id}(id=${item.id})}" class="btn btn-sm btn-default">DS Người hiến</a>
                 <span th:if="${item.status}">
                     <button class="btn btn-sm btn-success">Đã chuyển</button>
                 </span>
                 <span th:unless="${item.status}">
-                    <button class="btn btn-sm btn-warning">Chuyển</button>
+                    <a th:href="@{/event/forward/{id}(id=${item.id})}" class="btn btn-sm btn-warning">Chuyển</a>
                 </span>
             </td>
         </tr>
         </tbody>
     </table>
+    <div style="text-align: center">
+        <a th:if="${current}>1" th:href="@{/event/{id}(id=${current}-1)}" type="button" class="btn btn-default">Sau</a>
+        <a th:unless="${current}>1" th:href="@{/event/{id}(id=1)}" type="button" class="btn btn-default">Sau</a>
+        <div th:each="item:${page}" class="btn-group" role="group" aria-label="...">
+            <a th:href="@{/event/{id}(id=${item})}" th:if="${current}==${item}" th:text="${item}" type="button"
+               class="btn btn-success"></a>
+            <a th:href="@{/event/{id}(id=${item})}" th:unless="${current}==${item}" th:text="${item}" type="button"
+               class="btn btn-default"></a>
+        </div>
+        <a th:if="${current}>=${maxPage}" th:href="@{/event/{id}(id=${current})}" type="button"
+           class="btn btn-default">Kế tiếp</a>
+        <a th:unless="${current}>=${maxPage}" th:href="@{/event/{id}(id=${current}+1)}" type="button"
+           class="btn btn-default">Kế tiếp</a>
+    </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="detail" role="dialog">
@@ -126,25 +140,6 @@
             $(".modal-body #date").val(date);
             $(".modal-body #content").val(content);
             $(".modal-body #address").val(address);
-        });
-
-        $('#tableEvent').DataTable({
-            "scrollY": "200px",
-            "scrollCollapse": true,
-            "paging": true,
-            "language": {
-                "emptyTable": "Chưa tạo hiến máu nào.",
-                "info": "Hiển thị _START_ đến _END_ của _TOTAL_",
-                "search": "Tìm kiếm:",
-                "paginate": {
-                    "first": "Đầu tiên",
-                    "last": "Sau",
-                    "next": "Kế tiếp",
-                    "previous": "Quay lại"
-                },
-                "zeroRecords": "không tìm thấy",
-                "lengthMenu": "Hiển thị _MENU_",
-            }
         });
     });
 </script>

@@ -23,9 +23,8 @@ public class RestHistoryController {
     @Autowired
     HistoryService mHistoryService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getListHistoryByUser(@PathVariable int id) {
-        System.out.print(mHistoryService.getListHistoryByUser(mUserService.findById(id)).get(0).getTime() + "");
         return new ResponseEntity<>(new data(mHistoryService.getListHistoryByUser(mUserService.findById(id))), HttpStatus.OK);
     }
 }

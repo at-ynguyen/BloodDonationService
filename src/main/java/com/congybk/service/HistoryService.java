@@ -2,6 +2,7 @@ package com.congybk.service;
 
 import com.congybk.entity.History;
 import com.congybk.entity.User;
+import com.congybk.response.TopHistory;
 
 import java.util.List;
 
@@ -20,4 +21,12 @@ public interface HistoryService {
     History create(History History);
 
     List<History> getListHistoryByUser(User user);
+
+    List<TopHistory> getTopHistory();
+
+    long getCount();
+
+    List<TopHistory> getHistorys(int start);
+
+    int getNumberDonationByUser(User user);
 }

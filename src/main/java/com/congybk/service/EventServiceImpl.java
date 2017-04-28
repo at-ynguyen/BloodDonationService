@@ -15,6 +15,9 @@ public class EventServiceImpl implements EventService {
     @Autowired
     EventRepository mEventRepository;
 
+    @Autowired
+    UserService mUserService;
+
     @Override
     public List<Event> getAll() {
         return (List<Event>) mEventRepository.findAll();
@@ -38,5 +41,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event create(Event event) {
         return mEventRepository.save(event);
+    }
+
+    @Override
+    public List<Event> getListEvent(int start, int end) {
+        return mEventRepository.getListEvent(start, end);
+    }
+
+    @Override
+    public long getCount() {
+        return mEventRepository.count();
     }
 }
