@@ -52,8 +52,8 @@ public class historyController {
         int start = id * 10 - 10;
         List<User> users = mUserService.getListUser(start);
         List<TopHistory> topHistorys = new ArrayList<>();
-        for (int i = 0; i < users.size(); i++) {
-            topHistorys.add(new TopHistory(mHistoryService.getNumberDonationByUser(users.get(i)), users.get(i)));
+        for (User user : users) {
+            topHistorys.add(new TopHistory(mHistoryService.getNumberDonationByUser(user), user));
         }
         model.addAttribute("topHistorys", topHistorys);
         model.addAttribute("history", new FormHistory());

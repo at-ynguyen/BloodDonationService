@@ -22,27 +22,11 @@
 <nav style="background: #ffffff" class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Admin</a>
+            <a class="navbar-brand" href="#">Hiến máu nhân đạo</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Khẩn cấp</a></li>
-            <li><a href="/">Đợt hiến máu</a></li>
-        </ul>
     </div>
 </nav>
 <div class="container">
-    <div th:each="item:${posts}" class="row">
-        <div class="col-xs-6 col-md-3">
-            <a href="#" class="thumbnail">
-                <img th:src="${item.images}"
-                     alt="">
-            </a>
-        </div>
-        <div class="col-xs-6 col-md-3">
-            <a href=""><h4><b th:text="${item.postName}">Cần gấp máu</b></h4></a>
-            <span th:text="${item.postContent}"></span>
-        </div>
-    </div>
 </div>
 </body>
 </html>

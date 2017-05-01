@@ -1,11 +1,14 @@
 package com.congybk.webapp.controller;
 
 import com.congybk.entity.Event;
+import com.congybk.entity.EventMember;
+import com.congybk.entity.History;
 import com.congybk.entity.User;
 import com.congybk.service.*;
 import com.congybk.utlis.Constans;
 import com.congybk.utlis.PushNotificationUtils;
 import com.congybk.webapp.model.FormEvent;
+import com.congybk.webapp.model.FormHistoryEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -144,6 +147,32 @@ public class WebEventController {
         model.addAttribute("event", mEventService.findById(Integer.parseInt(id)));
         model.addAttribute("users", mMemberService.getListMemberByEvent(mEventService.findById(Integer.parseInt(id))));
         return "view-member-event";
+    }
+
+    @RequestMapping(value = "/user/add")
+    public String addHistory(@ModelAttribute FormHistoryEvent history) {
+        History his = new History();
+        User user = mUserService.findById(history.getId());
+        his.setUser(user);
+        his.setNote(history.getNote());
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = dt.parse(history.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (user.getBloodType() == null || user.getBloodType().equals("")) {
+            user.setBloodType(history.getBloodType());
+            mUserService.update(user);
+        }
+        List<EventMember> eventMembers = mMemberService.findByEventAndUser(history.getEventId(), history.getId());
+        if (eventMembers.size() != 0) {
+            eventMembers.get(0).setStatus(true);
+            mMemberService.update(eventMembers.get(0));
+        }
+        his.setTime(date);
+        return "redirect:/event/user/" + history.getEventId();
     }
 
     @RequestMapping(value = "/forward/{id}")
