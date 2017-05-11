@@ -91,4 +91,16 @@ public class UserServiceImpl implements UserService {
     public List<User> findByTownIdAndBloodType(int townId, String bloodType) {
         return mUserRepository.findByTownIdAndBloodType(townId, bloodType);
     }
+
+    @Override
+    public long getCount() {
+        return mUserRepository.count();
+    }
+
+    @Override
+    public List<User> findUserByFullnameOrCardId(String query) {
+        return mUserRepository.findUserByFullnameOrCardId(query);
+    }
+
+
 }

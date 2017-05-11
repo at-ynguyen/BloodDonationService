@@ -87,8 +87,19 @@ public class UserController {
         Boolean gender = Boolean.valueOf(data.get("gender"));
         User userByEmail = userService.findByEmail(email);
         User userByCardId = userService.findByCardId(cardId);
-        if (userByEmail != null || userByCardId != null) {
+        if (userByEmail != null) {
             return new ResponseEntity<>("Email has been registered already!", HttpStatus.CONFLICT);
+        } else if (userByCardId != null && userByCardId.getEmail() == null) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String passwordEncoded = passwordEncoder.encode(password);
+            userByCardId.setGender(gender);
+            userByCardId.setEmail(email);
+            userByCardId.setPassword(passwordEncoded);
+            userService.update(userByCardId);
+            Role role = roleService.findById(2);
+            permissionService.create(userByCardId, role);
+            String token = this.jwtTokenUtil.generateToken(this.userDetailsService.loadUserByUsername(userByCardId.getEmail()));
+            return new ResponseEntity<>(new JwtAuthenticationResponse(token), HttpStatus.CREATED);
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String passwordEncoded = passwordEncoder.encode(password);

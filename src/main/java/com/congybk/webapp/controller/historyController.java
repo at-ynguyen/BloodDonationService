@@ -8,6 +8,7 @@ import com.congybk.service.HistoryService;
 import com.congybk.service.UserService;
 import com.congybk.webapp.model.FormAddUser;
 import com.congybk.webapp.model.FormHistory;
+import com.congybk.webapp.model.SearchHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class historyController {
 
     @RequestMapping(value = "/{id}")
     public String history(Model model, @PathVariable int id) {
-        long number = mHistoryService.getCount();
+        long number = mUserService.getCount();
         long page = number / 10;
         if (page * 10 < number) {
             page++;
@@ -59,6 +60,30 @@ public class historyController {
         model.addAttribute("history", new FormHistory());
         model.addAttribute("page", mListPage);
         model.addAttribute("current", id);
+        model.addAttribute("maxPage", page);
+        return "manager-history";
+    }
+
+    @RequestMapping(value = "/search")
+    public String search(Model model, @ModelAttribute SearchHistory searchHistory) {
+        List<User> users = mUserService.findUserByFullnameOrCardId(searchHistory.getQuery());
+        List<TopHistory> topHistorys = new ArrayList<>();
+        for (User user : users) {
+            topHistorys.add(new TopHistory(mHistoryService.getNumberDonationByUser(user), user));
+        }
+        long number = users.size();
+        long page = number / 10;
+        if (page * 10 < number) {
+            page++;
+        }
+        List<Long> mListPage = new ArrayList<>();
+        for (long i = 1; i <= page; i++) {
+            mListPage.add(i);
+        }
+        model.addAttribute("topHistorys", topHistorys);
+        model.addAttribute("history", new FormHistory());
+        model.addAttribute("page", mListPage);
+        model.addAttribute("current", 1);
         model.addAttribute("maxPage", page);
         return "manager-history";
     }

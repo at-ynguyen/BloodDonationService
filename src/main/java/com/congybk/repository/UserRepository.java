@@ -29,4 +29,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query(value = "SELECT * FROM user WHERE town_id=:id AND blood_type=:bloodType", nativeQuery = true)
     List<User> findByTownIdAndBloodType(@Param("id") int id, @Param("bloodType") String bloodType);
+
+    @Query("SELECT u FROM User u WHERE (u.fullName LIKE LOWER(CONCAT('%', ?1, '%')) OR (u.cardId LIKE LOWER(CONCAT('%', ?1, '%') ) ))")
+    List<User> findUserByFullnameOrCardId(String query);
 }

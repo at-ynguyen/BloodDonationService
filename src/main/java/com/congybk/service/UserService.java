@@ -39,4 +39,9 @@ public interface UserService {
     List<User> findByTownId(int townId);
 
     List<User> findByTownIdAndBloodType(int townId, String bloodType);
+
+    long getCount();
+
+    List<User> findUserByFullnameOrCardId(String query);
+
 }

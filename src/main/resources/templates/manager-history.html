@@ -29,14 +29,10 @@
     </div>
 </nav>
 <div class="container">
-    <form class="form-inline">
+    <form th:action="@{/history/search}" class="form-inline">
         <div class="form-group">
-            <select class="form-control" name="search">
-                <option>Họ và tên</option>
-                <option>CMND</option>
-            </select>
-            <input type="text" class="form-control" placeholder="Nhập thông tin tìm kiếm"/>
-            <a class="btn btn-success">Tìm kiếm</a>
+            <input type="text" name="query" class="form-control" placeholder="Nhập thông tin tìm kiếm"/>
+            <button type="submit" class="btn btn-success">Tìm kiếm</button>
         </div>
     </form>
     <br/>
