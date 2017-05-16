@@ -1,18 +1,25 @@
 package com.congybk.webapp.controller;
 
 import com.congybk.entity.Event;
+import com.congybk.entity.EventMember;
+import com.congybk.entity.Town;
+import com.congybk.entity.User;
 import com.congybk.response.EventResponse;
-import com.congybk.service.EventMemberService;
-import com.congybk.service.EventService;
-import com.congybk.service.FindBloodService;
-import com.congybk.service.HistoryService;
+import com.congybk.service.*;
+import com.congybk.webapp.model.FormAddUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @Author YNC on 09/05/2017.
@@ -28,6 +35,8 @@ public class IndexController {
     EventService mEventService;
     @Autowired
     EventMemberService eventMemberService;
+    @Autowired
+    UserService mUserService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -48,4 +57,49 @@ public class IndexController {
         return "indexEvent";
     }
 
+    @RequestMapping("/index/view/event/{id}")
+    public String viewEvent(@PathVariable int id, Model model) {
+        Event event = mEventService.findById(id);
+        model.addAttribute("topHistory", mHistoryService.getTopHistory());
+        model.addAttribute("event", new EventResponse(eventMemberService.getListMemberByEvent(event).size(), event));
+        return "view-event";
+    }
+
+    @RequestMapping(value = "/index/view/add")
+    public String addUser(@ModelAttribute FormAddUser user) {
+        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date date = null;
+        try {
+            date = dt.parse(user.getBirthDay());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        User userSearch = mUserService.findByCardId(user.getCardId());
+        User userResult;
+        if (userSearch != null) {
+            userResult = userSearch;
+        } else {
+            User userAdd = new User(user.getCardId(), user.getFullName(), new Town(1, ""), date, user.getBloodType());
+            userResult = mUserService.create(userAdd);
+        }
+        if (userResult != null) {
+            Event event = mEventService.findById(Integer.parseInt(user.getId()));
+            List<EventMember> eventMember = eventMemberService.findByEventAndUser(event.getId(), userResult.getId());
+            if (eventMember.size() == 0) {
+                if (eventMemberService.create(new EventMember(event, userResult, false, "")) != null) {
+                    return "redirect:/index/view/event/" + user.getId();
+                }
+            }
+
+        }
+
+        return "redirect:/index/view/event/" + user.getId();
+    }
+
+    @RequestMapping(value = "/index/view/findblood/{id}")
+    public String getFindBloodById(@PathVariable int id, Model model) {
+        model.addAttribute("findblood", findBloodService.findById(id));
+        model.addAttribute("topHistory", mHistoryService.getTopHistory());
+        return "view-find-blood";
+    }
 }

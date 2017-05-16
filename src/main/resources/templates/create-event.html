@@ -9,6 +9,26 @@
     <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.js"></script>
+    <style>
+        a.paginate_button {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        a.current {
+            background: #ecf0f1;;
+        }
+
+        footer {
+            position: fixed;
+            height: 60px;
+            margin-bottom: 0px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #ecf0f1;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -28,7 +48,7 @@
         </ul>
     </div>
 </nav>
-<div class="container" style="margin-top: 50px">
+<div class="container" style="margin-top: 50px;margin-bottom: 100px">
     <div class="row">
         <div class="col-sm-10 col-md-8 col-md-offset-2">
             <h2 style="text-align: center">Tạo đợt hiến máu</h2>
@@ -67,6 +87,9 @@
         </div>
     </div>
 </div>
+<footer class="navbar-fixed-bottom">
+    <span style="color: black"><b>Copyright © Nguyễn Công Y - Đồ án tốt nghiệp</b></span>
+</footer>
 <script>
     $(document).ready(function () {
         $('#content').summernote({

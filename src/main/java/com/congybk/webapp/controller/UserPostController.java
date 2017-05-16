@@ -51,7 +51,7 @@ public class UserPostController {
         findBlood.setApproved(true);
         findBloodService.update(findBlood);
         List<User> users = userService.findByBloodType(findBlood.getBloodType());
-        PushNotificationUtils.pushNotification(users, findBlood.getPostName(), findBlood.getPostContent());
+        PushNotificationUtils.pushNotification(users, findBlood.getPostName(), findBlood.getPostContent(),id,1);
         return "redirect:/post/1";
     }
 

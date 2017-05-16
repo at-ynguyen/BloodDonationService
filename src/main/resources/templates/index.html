@@ -34,15 +34,11 @@
         <div class="navbar-header">
             <img width="50px" height="50px"
                  src="https://image.flaticon.com/icons/png/128/128/128703.png"/>
-            <a style="color: white" href="#"><b>Hiến máu nhân đạo</b></a>
+            <a style="color: white" href="/"><b>Hiến máu nhân đạo</b></a>
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="row" style="height:200px">
-        <img width="100%" height="200px" src="http://abhinavbharatuk.org/wp-content/uploads/2016/08/dblood.jpg"/>
-    </div>
-    <br/>
+<div style="margin-bottom: 60px" class="container">
     <div style="height: 200px" class="row">
         <div class="col-sm-9">
             <ul class="nav nav-tabs">
@@ -60,7 +56,8 @@
                              th:unless="${item.image}==null"/>
                     </div>
                     <div class="col-sm-9">
-                        <a href=""> <b th:text="${item.postName}">What is Lorem Ipsum?</b><br/></a>
+                        <a th:href="@{/index/view/findblood/{id}(id=${item.id})}"> <b th:text="${item.postName}">What is
+                            Lorem Ipsum?</b><br/></a>
                         <img width="10px" height="10px"
                              src="https://maxcdn.icons8.com/Share/icon/Time_And_Date//timer1600.png"/>
                         <span th:text="${item.createAt}">10/05/2017</span>
@@ -93,7 +90,7 @@
     </div>
 </div>
 <br/>
-<footer class="navbar">
+<footer class="navbar-fixed-bottom">
     <span style="color: black"><b>Copyright © Nguyễn Công Y - Đồ án tốt nghiệp</b></span>
 </footer>
 </body>

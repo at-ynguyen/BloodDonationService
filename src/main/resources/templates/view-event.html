@@ -41,36 +41,13 @@
 <div style="margin-bottom: 60px" class="container">
     <div style="height: 200px" class="row">
         <div class="col-sm-9">
-            <ul class="nav nav-tabs">
-                <li><a href="/">Khẩn cấp</a></li>
-                <li class="active"><a href="#">Đợt hiến máu</a></li>
-            </ul>
-            <br/>
-            <div th:each="item:${event}">
-                <div class="row" style="">
-                    <div class="col-sm-3">
-
-                        <img style="width: 200px;max-height: 200px;"
-                             src="https://s-media-cache-ak0.pinimg.com/236x/91/59/30/915930efb3c2345af795ec10114732b1.jpg"/>
-                    </div>
-                    <div class="col-sm-9">
-                        <a th:href="@{/index/view/event/{id}(id=${item.event.id})}"> <b
-                                th:text="${item.event.eventName}">What is Lorem Ipsum?</b><br/></a>
-                        <img width="10px" height="10px"
-                             src="https://maxcdn.icons8.com/Share/icon/Time_And_Date//timer1600.png"/>
-                        <span th:text="${item.event.createAt}">10/05/2017</span>
-                        <br/>
-                        <p th:remove="tag" th:utext="${item.event.content}" style="max-height: 100%"></p>
-                        <br/>
-                        <br/>
-                        <div style="text-align: right">
-                            <span>Số người tham gia: </span>
-                            <span th:text="${item.members}"></span>
-                        </div>
-                    </div>
-                </div>
-                <br/>
-            </div>
+            <h3 style="background-color: #ecf0f1;padding: 10px" th:text="${event.event.eventName}"></h3>
+            <img width="10px" height="10px"
+                 src="https://maxcdn.icons8.com/Share/icon/Time_And_Date//timer1600.png"/>
+            <span th:text="${event.event.createAt}"></span> <br/>
+            <span>Số người tham gia: </span><span th:text="${event.members}"></span><br/><br/>
+            <span th:remove="tag" th:utext="${event.event.content}"></span><br/><br/>
+            <button data-toggle="modal" data-target="#addUser" class="btn btn-success">Tham gia</button>
         </div>
         <br/>
         <div class="col-sm-3">
@@ -97,5 +74,34 @@
 <footer class="navbar-fixed-bottom">
     <span style="color: black"><b>Copyright © Nguyễn Công Y - Đồ án tốt nghiệp</b></span>
 </footer>
+
+<!-- Modal -->
+<div class="modal fade" id="addUser" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thêm thành viên</h4>
+            </div>
+            <form th:action="@{/index/view/add}" class="form-horizontal">
+                <div class="modal-body">
+                    <input type="hidden" th:value="${event.event.id}" name="id"/>
+                    <input name="fullName" type="text" class="form-control" placeholder="Họ và tên"/>
+                    <br/>
+                    <input name="cardId" type="number" class="form-control" placeholder="Chứng minh nhân dân"/>
+                    <br/>
+                    <input name="bloodType" type="text" class="form-control" placeholder="Nhóm máu"/>
+                    <br/>
+                    <label>Ngày sinh</label>
+                    <input name="birthDay" type="date" class="form-control"/><br/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

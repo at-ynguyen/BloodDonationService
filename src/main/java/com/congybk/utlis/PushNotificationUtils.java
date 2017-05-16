@@ -16,7 +16,7 @@ public final class PushNotificationUtils {
     private PushNotificationUtils() {
     }
 
-    public static void pushFCMNotification(String userDeviceIdKey,String title,String body) throws Exception {
+    public static void pushFCMNotification(String userDeviceIdKey, String title, String body, int id, int type) throws Exception {
 
         String authKey = Constans.AUTH_KEY_FCM; // You FCM AUTH key
         String FMCurl = Constans.API_URL_FCM;
@@ -36,6 +36,10 @@ public final class PushNotificationUtils {
         JsonObject info = new JsonObject();
         info.addProperty("title", title); // Notification title
         info.addProperty("body", body); // Notification body
+        JsonObject data = new JsonObject();
+        data.addProperty("id", id);
+        data.addProperty("type", type);
+        json.add("data",data);
         json.add("notification", info);
 
         OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -44,11 +48,11 @@ public final class PushNotificationUtils {
         conn.getInputStream();
     }
 
-    public static void pushNotification(List<User> users, String title, String body) {
+    public static void pushNotification(List<User> users, String title, String body,int id, int type) {
         for (User user : users) {
             try {
                 if (user.getTokenPushNotification() != null) {
-                    PushNotificationUtils.pushFCMNotification(user.getTokenPushNotification(), title, body);
+                    PushNotificationUtils.pushFCMNotification(user.getTokenPushNotification(), title, body,id,type);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

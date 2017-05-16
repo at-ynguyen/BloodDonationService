@@ -9,6 +9,26 @@
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css"/>
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <style>
+        a.paginate_button {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        a.current {
+            background: #ecf0f1;;
+        }
+
+        footer {
+            position: fixed;
+            height: 60px;
+            margin-bottom: 0px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #ecf0f1;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -28,7 +48,7 @@
         </ul>
     </div>
 </nav>
-<div class="container">
+<div class="container" style="margin-top: 50px;margin-bottom: 100px">
     <form th:action="@{/history/search}" class="form-inline">
         <div class="form-group">
             <input type="text" name="query" class="form-control" placeholder="Nhập thông tin tìm kiếm"/>
@@ -108,5 +128,8 @@
         });
     });
 </script>
+<footer class="navbar-fixed-bottom">
+    <span style="color: black"><b>Copyright © Nguyễn Công Y - Đồ án tốt nghiệp</b></span>
+</footer>
 </body>
 </html>

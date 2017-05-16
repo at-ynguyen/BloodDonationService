@@ -92,7 +92,7 @@ public class WebEventController {
                         List<User> userBlood = mUserService.findByTownIdAndBloodType(Integer.parseInt(formEvent.getTown()), bloodType1);
                         users.addAll(userBlood);
                     }
-                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent());
+                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent(),event.getId(),0);
                     break;
                 }
                 case "2": {
@@ -103,17 +103,17 @@ public class WebEventController {
                         System.out.println(bloodType1 + "| |" + userBlood.size());
                         users.addAll(userBlood);
                     }
-                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent());
+                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent(),event.getId(),0);
                     break;
                 }
                 case "3": {
                     users = mUserService.findByTownId(Integer.parseInt(formEvent.getTown()));
-                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent());
+                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent(),event.getId(),0);
                     break;
                 }
                 default: {
                     users = mUserService.getAll();
-                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent());
+                    PushNotificationUtils.pushNotification(users, formEvent.getName(), formEvent.getContent(),event.getId(),0);
                 }
             }
             return "redirect:/event/1";
