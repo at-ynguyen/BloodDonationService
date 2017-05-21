@@ -40,20 +40,91 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(Model model) {
+        long number = findBloodService.getCount();
+        long page = number / 5;
+        if (page * 5 < number) {
+            page++;
+        }
+        List<Long> mListPage = new ArrayList<>();
+        for (long i = 1; i <= page; i++) {
+            mListPage.add(i);
+        }
+        int start = 1 * 5 - 5;
+        model.addAttribute("topHistory", mHistoryService.getTopHistory());
+        model.addAttribute("findBlood", findBloodService.getFindBlood(start, 5));
+        model.addAttribute("page", mListPage);
+        model.addAttribute("current", 1);
+        model.addAttribute("maxPage", page);
+        return "index";
+    }
+
+    @RequestMapping("/{id}")
+    public String index(@PathVariable int id,Model model) {
+        long number = findBloodService.getCount();
+        long page = number / 5;
+        if (page * 5 < number) {
+            page++;
+        }
+        List<Long> mListPage = new ArrayList<>();
+        for (long i = 1; i <= page; i++) {
+            mListPage.add(i);
+        }
+        int start = id * 5 - 5;
         model.addAttribute("topHistory", mHistoryService.getTopHistory());
         model.addAttribute("findBlood", findBloodService.getFindBlood(0, 5));
+        model.addAttribute("page", mListPage);
+        model.addAttribute("current", id);
+        model.addAttribute("maxPage", page);
         return "index";
     }
 
     @RequestMapping("/index/event")
     public String indexEvent(Model model) {
+        long number = mEventService.getCount();
+        long page = number / 5;
+        if (page * 5 < number) {
+            page++;
+        }
+        List<Long> mListPage = new ArrayList<>();
+        for (long i = 1; i <= page; i++) {
+            mListPage.add(i);
+        }
+        int start = 1 * 5 - 5;
         List<EventResponse> eventResponses = new ArrayList<>();
-        List<Event> events = mEventService.getListEvent(0, 5);
+        List<Event> events = mEventService.getListEvent(start, 5);
         for (int i = 0; i < events.size(); i++) {
             eventResponses.add(new EventResponse(eventMemberService.getListMemberByEvent(events.get(i)).size(), events.get(i)));
         }
         model.addAttribute("topHistory", mHistoryService.getTopHistory());
         model.addAttribute("event", eventResponses);
+        model.addAttribute("page", mListPage);
+        model.addAttribute("current", 1);
+        model.addAttribute("maxPage", page);
+        return "indexEvent";
+    }
+
+    @RequestMapping("/index/event/{id}")
+    public String indexEventID(@PathVariable int id, Model model) {
+        long number = mEventService.getCount();
+        long page = number / 5;
+        if (page * 5 < number) {
+            page++;
+        }
+        List<Long> mListPage = new ArrayList<>();
+        for (long i = 1; i <= page; i++) {
+            mListPage.add(i);
+        }
+        int start = id * 5 - 5;
+        List<EventResponse> eventResponses = new ArrayList<>();
+        List<Event> events = mEventService.getListEvent(start, 5);
+        for (int i = 0; i < events.size(); i++) {
+            eventResponses.add(new EventResponse(eventMemberService.getListMemberByEvent(events.get(i)).size(), events.get(i)));
+        }
+        model.addAttribute("topHistory", mHistoryService.getTopHistory());
+        model.addAttribute("event", eventResponses);
+        model.addAttribute("page", mListPage);
+        model.addAttribute("current", id);
+        model.addAttribute("maxPage", page);
         return "indexEvent";
     }
 

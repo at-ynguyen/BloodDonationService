@@ -123,6 +123,7 @@
             </div>
             <form class="form-horizontal">
                 <div class="modal-body">
+                    <input type="hidden" id="id"/>
                     <input id="name" type="text" class="form-control" placeholder="Tên đợt"
                            readonly="readonly"/><br/>
                     <input id="organization" type="text" class="form-control" placeholder="Đơn vị" readonly="readonly"/><br/>
@@ -155,8 +156,9 @@
             $(".modal-body #organization").val(organization);
             $(".modal-body #type").val(bloodType);
             $(".modal-body #date").val(date);
-            $(".modal-body #content").summernote("code", content);
             $(".modal-body #address").val(address);
+            $(".modal-body #content").summernote("code", content);
+
         });
 
         $('#content').summernote({

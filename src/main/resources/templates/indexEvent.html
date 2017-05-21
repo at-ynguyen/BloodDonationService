@@ -50,11 +50,11 @@
                 <div class="row" style="">
                     <div class="col-sm-3">
 
-                        <img style="width: 200px;max-height: 200px;"
+                        <img class="img-thumbnail" style="width: 200px;max-height: 200px;"
                              src="https://s-media-cache-ak0.pinimg.com/236x/91/59/30/915930efb3c2345af795ec10114732b1.jpg"/>
                     </div>
                     <div class="col-sm-9">
-                        <a th:href="@{/index/view/event/{id}(id=${item.event.id})}"> <b
+                        <a  th:href="@{/index/view/event/{id}(id=${item.event.id})}"> <b
                                 th:text="${item.event.eventName}">What is Lorem Ipsum?</b><br/></a>
                         <img width="10px" height="10px"
                              src="https://maxcdn.icons8.com/Share/icon/Time_And_Date//timer1600.png"/>
@@ -70,6 +70,25 @@
                     </div>
                 </div>
                 <br/>
+            </div>
+
+            <div style="text-align: center">
+                <a th:if="${current}>1" th:href="@{/index/event/{id}(id=${current}-1)}" type="button"
+                   class="btn btn-default">Sau</a>
+                <a th:unless="${current}>1" th:href="@{/index/event/{id}(id=1)}" type="button"
+                   class="btn btn-default">Sau</a>
+                <div th:each="item:${page}" class="btn-group" role="group" aria-label="...">
+                    <a th:href="@{/index/event/{id}(id=${item})}" th:if="${current}==${item}" th:text="${item}"
+                       type="button"
+                       class="btn btn-success"></a>
+                    <a th:href="@{/index/event/{id}(id=${item})}" th:unless="${current}==${item}" th:text="${item}"
+                       type="button"
+                       class="btn btn-default"></a>
+                </div>
+                <a th:if="${current}>=${maxPage}" th:href="@{/index/event/{id}(id=${current})}" type="button"
+                   class="btn btn-default">Kế tiếp</a>
+                <a th:unless="${current}>=${maxPage}" th:href="@{/index/event/{id}(id=${current}+1)}" type="button"
+                   class="btn btn-default">Kế tiếp</a>
             </div>
         </div>
         <br/>

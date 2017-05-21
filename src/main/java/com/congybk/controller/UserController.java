@@ -84,6 +84,8 @@ public class UserController {
         String password = data.get("password");
         String fullName = data.get("full_name");
         String cardId = data.get("card_id");
+        String numberPhone = data.get("phone_number");
+        String roleIds = "2";
         Boolean gender = Boolean.valueOf(data.get("gender"));
         User userByEmail = userService.findByEmail(email);
         User userByCardId = userService.findByCardId(cardId);
@@ -94,6 +96,7 @@ public class UserController {
             String passwordEncoded = passwordEncoder.encode(password);
             userByCardId.setGender(gender);
             userByCardId.setEmail(email);
+            userByCardId.setPhoneNumber(numberPhone);
             userByCardId.setPassword(passwordEncoded);
             userService.update(userByCardId);
             Role role = roleService.findById(2);
@@ -101,13 +104,17 @@ public class UserController {
             String token = this.jwtTokenUtil.generateToken(this.userDetailsService.loadUserByUsername(userByCardId.getEmail()));
             return new ResponseEntity<>(new JwtAuthenticationResponse(token), HttpStatus.CREATED);
         } else {
+            String[] roleIdList = roleIds.split(",");
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String passwordEncoded = passwordEncoder.encode(password);
             User user = new User(new Integer(0), email, passwordEncoded, cardId, fullName, gender);
             user.setCardId(user.getCardId());
+            user.setPhoneNumber(numberPhone);
             User newUser = userService.create(user);
-            Role role = roleService.findById(2);
-            permissionService.create(newUser, role);
+            for (String roleId : roleIdList) {
+                Role role = roleService.findById(Integer.parseInt(roleId.trim()));
+                permissionService.create(newUser, role);
+            }
             String token = this.jwtTokenUtil.generateToken(this.userDetailsService.loadUserByUsername(user.getEmail()));
             return new ResponseEntity<>(new JwtAuthenticationResponse(token), HttpStatus.CREATED);
         }
@@ -163,13 +170,14 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/info")
     public ResponseEntity<?> getInformation() {
+        System.out.print("EMAIL:" + UserUtils.getAccountCodeByAuthorization());
         User user = this.userService.findByEmail(UserUtils.getAccountCodeByAuthorization());
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(user);
-        FilterProvider filters = new SimpleFilterProvider()
-                .addFilter("filter.User", SimpleBeanPropertyFilter
-                        .serializeAllExcept("password"));
-        mappingJacksonValue.setFilters(filters);
-        return new ResponseEntity<Object>(mappingJacksonValue, HttpStatus.OK);
+//        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(user);
+//        FilterProvider filters = new SimpleFilterProvider()
+//                .addFilter("filter.User", SimpleBeanPropertyFilter
+//                        .serializeAllExcept("password"));
+//        mappingJacksonValue.setFilters(filters);
+        return new ResponseEntity<Object>(user, HttpStatus.OK);
     }
 
 

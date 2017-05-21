@@ -33,7 +33,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <img width="50px" height="50px"
-                 src="https://image.flaticon.com/icons/png/128/128/128703.png"/>
+                 src="https://image.flaticon.com/icons/svg/340/340086.svg"/>
             <a style="color: white" href="/"><b>Hiến máu nhân đạo</b></a>
         </div>
     </div>
@@ -47,12 +47,13 @@
             </ul>
             <br/>
             <div th:each="item:${findBlood}">
-                <div class="row" style="">
+                <div class="row">
                     <div class="col-sm-3">
-
-                        <img th:if="${item.image}==''" style="width: 200px;max-height: 200px;"
+                        <img class="img-thumbnail" th:if="${item.image}==''"
+                             style="width: 200px;height: 200px;"
                              src="https://s-media-cache-ak0.pinimg.com/236x/91/59/30/915930efb3c2345af795ec10114732b1.jpg"/>
-                        <img style="width: 200px;max-height: 200px;" th:src="${item.image}"
+                        <img class="img-thumbnail" style="width: 200px;height: 200px;"
+                             th:src="${item.image}"
                              th:unless="${item.image}==null"/>
                     </div>
                     <div class="col-sm-9">
@@ -62,10 +63,28 @@
                              src="https://maxcdn.icons8.com/Share/icon/Time_And_Date//timer1600.png"/>
                         <span th:text="${item.createAt}">10/05/2017</span>
                         <br/>
-                        <span th:text="${item.postContent}" style="max-height: 100%"></span>
+                        <span th:text="${item.postContent}" style="height:200px"></span>
                     </div>
                 </div>
                 <br/>
+            </div>
+            <div style="text-align: center">
+                <a th:if="${current}>1" th:href="@{/{id}(id=${current}-1)}" type="button"
+                   class="btn btn-default">Sau</a>
+                <a th:unless="${current}>1" th:href="@{/{id}(id=1)}" type="button"
+                   class="btn btn-default">Sau</a>
+                <div th:each="item:${page}" class="btn-group" role="group" aria-label="...">
+                    <a th:href="@{/{id}(id=${item})}" th:if="${current}==${item}" th:text="${item}"
+                       type="button"
+                       class="btn btn-success"></a>
+                    <a th:href="@{/{id}(id=${item})}" th:unless="${current}==${item}" th:text="${item}"
+                       type="button"
+                       class="btn btn-default"></a>
+                </div>
+                <a th:if="${current}>=${maxPage}" th:href="@{/{id}(id=${current})}" type="button"
+                   class="btn btn-default">Kế tiếp</a>
+                <a th:unless="${current}>=${maxPage}" th:href="@{/{id}(id=${current}+1)}" type="button"
+                   class="btn btn-default">Kế tiếp</a>
             </div>
         </div>
         <br/>

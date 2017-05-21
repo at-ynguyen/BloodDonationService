@@ -7,6 +7,7 @@ public class JwtAuthenticationRequest implements Serializable {
     private static final long serialVersionUID = -8445943548965154778L;
     private String email;
     private String password;
+    private String urlPath;
 
     public JwtAuthenticationRequest() {
     }
@@ -14,6 +15,14 @@ public class JwtAuthenticationRequest implements Serializable {
     public JwtAuthenticationRequest(String username, String password) {
         this.setEmail(username);
         this.setPassword(password);
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
     }
 
     public String getEmail() {
